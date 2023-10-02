@@ -1,0 +1,148 @@
+
+
+struct badStructA {
+    int x;
+    bool x; //1 error, multiple declared
+    void x; //2 errors, first void param, second ,multiple declared.
+    void a; //1 error, void param
+};
+
+// 2. test bad struct within a bad struct
+struct badStructB {
+    int x;
+    struct badStructA x;    //1 error, multiple declared
+    struct weirdStruct a;   //1 error, invalid name of struct type
+};
+
+struct goodStructA {
+    int x;
+    bool y;
+};
+
+struct goodStructA {    //multiply declared
+    int a;
+    bool b;
+};
+struct goodStructB {
+    struct goodStructA a;
+    bool b;
+};
+
+
+int a;
+bool a; //1 error, multiple declared (test global var)
+ 
+
+int a(int b)    //1 error, for multiply declared function name.
+{
+    struct goodStructA d;
+    struct goodStructB e;
+    void a; //non function declared void
+    int b;  //1 error, multiply declared. 
+    b.b = 5;    //1error, dot access of non-struct type
+    d.z = 6;  //1 error invalid struct field name
+    d.x.z = 4;  //1error, dot access of non-struct type
+    e.a.b = 5;//1 error, invalid struct field name
+
+
+}
+
+//test several function cases
+bool b()
+{
+
+}
+
+void b()    //1 error two functions name the same, illegal, multiply declared
+{
+
+}
+
+void c(int a ,bool a)    // 1 error ,multiply declared
+{}
+
+void d()
+{
+    int a;
+    bool a; //multiple declared
+}
+
+void e(int a)
+{
+    bool a; //multiply declared
+}
+
+void z()
+{
+    a(x);//undeclared
+}
+
+
+//test if statement
+void f()
+{
+    if(true)
+    {
+    struct goodStructA d;
+    struct goodStructB e;
+    bool b;
+    int b;  //1 error, multiply declared. 
+    b.b = 5;    //1error, dot access of non-struct type
+    d.z = 6;  //1 error invalid struct field name
+    d.x.z = 4;  //1error, dot access of non-struct type
+    e.a.b = 5;//1 error, invalid struct field name
+        
+    }
+}
+
+//test if else
+void g()
+{
+    if(true)
+    {
+    struct goodStructA d;
+    struct goodStructB e;
+    bool b;
+    int b;  //1 error, multiply declared. 
+    b.b = 5;    //1error, dot access of non-struct type
+    d.z = 6;  //1 error invalid struct field name
+    d.x.z = 4;  //1error, dot access of non-struct type
+    e.a.b = 5;//1 error, invalid struct field name
+        
+    }else{
+    struct goodStructA d;
+    struct goodStructB e;
+    bool b;
+    int b;  //1 error, multiply declared. 
+    b.b = 5;    //1error, dot access of non-struct type
+    d.z = 6;  //1 error invalid struct field name
+    d.x.z = 4;  //1error, dot access of non-struct type
+    e.a.b = 5;//1 error, invalid struct field name
+    }
+}
+
+
+//test while
+void h()
+{
+    while(true)
+    {
+    struct goodStructA d;
+    struct goodStructB e;
+    bool b;
+    int b;  //1 error, multiply declared. 
+    b.b = 5;    //1error, dot access of non-struct type
+    d.z = 6;  //1 error invalid struct field name
+    d.x.z = 4;  //1error, dot access of non-struct type
+    e.a.b = 5;//1 error, invalid struct field name
+        
+    }
+}
+
+
+
+
+
+
+
+

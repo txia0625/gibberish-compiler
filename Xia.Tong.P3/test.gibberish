@@ -1,0 +1,129 @@
+struct testStruct1 { int a;bool b;void c;}; // 1.test a simple struct  
+
+struct testStruct2{struct testStruct1 outerStruct; int outerA; bool outerB; void outerC;};  // 2.test a struct has a struct
+
+int globalVar1;bool globalVar2;void globalVar3;struct testStruct2 globalVar4;  ## 3.test global variables
+
+int NonParameter_Function(){
+    int a;
+    bool b;
+    void c; 
+    d = "\"testString\"";
+    a++;    // 4.self increment
+    a--;    // 5.self decrement
+    
+    ## 6.followings are logical operation test(and associativity)
+    b = d || e && f && !g ||!(h && i);
+    b = d && e && f && g && h;
+    b = d || e || f||g||h;
+    a =  1 + 2 *3 /4 +5 /6 * 7 /8 ;
+    a =  (1 + 2) *3 /4 +5 /6 * 7 /8;
+    a= -4 +2 *5 /4 + 6;
+    a = b= c = d = e;
+    a =  1+2+3+4+5+6;
+    a= 1 -2-3-4-5-6;
+    a=1*2*3*4*5*6;
+    a=1/2/3/4/5/6;
+    a= a.b.c.d.e.f;
+    
+    ## 7.test equality
+    b = true;
+    b = false;
+    b = a > 0;
+    b = a < 0;
+    b = a >= d;
+    b = a <= d;
+    b = a == d;
+    b = a != d; 
+    
+
+
+
+
+    ## 8.test nested if statement and cout, cin
+
+    if(a != 100 -5 * 6/2){
+        cout << a; 
+        
+        t1 = 1 - 5;
+        return a+3;
+
+        if(a == !true){
+            cin >> a;
+            if(b == ! true){
+                tag = "further nested";
+            }
+        }
+
+        while(a == false){
+            tag = "nested while loop";
+        }
+
+        ## 9.test if else statement and functions with arg and without args
+        if(generateBool() != generateRandomBool(1,6)){
+            out = "nested if else";
+        }else{
+            return gradeA();
+        }
+    }
+    
+
+
+
+
+
+
+    ## 10.test nested while and dot operator, repeat  
+    while(randomBoolFunction()){
+        repeat(!b&& a < 6){
+            a.b.c.d.e.f.g = 6;
+            return a;
+        }
+
+        while(doSomething()){
+            out = forMe(21);
+        }
+
+        return 1;
+    }
+##test nested function call
+    return returnSomeVal(rand, someRandomVal(a, nestedAgain(b)));
+
+    
+
+}
+
+## 12.test function with parameters with some flatten statements
+void Function_withParameter(int a, bool b)
+{
+
+    int a;bool b;void c; d = "\"testString\"";a++; a--;    
+    
+    
+    b = d || e && f && !g ||!(h && i);b = d && e && f && g && h;b = d || e || f||g||h;a =  1 + 2 *3 /4 +5 /6 * 7 /8 ;a =  (1 + 2) *3 /4 +5 /6 * 7 /8;a= -4 +2 *5 /4 + 6;
+    
+    
+
+    b=true;b=false;b = a > 0;b = a < 0;b = a >= d;b = a <= d;b = a == d;b = a != d; 
+    
+    
+    
+    if(a + 6 == 4){int t1;bool t2;void t3;t1 = 1 - 5;return a+3;}
+
+    
+
+    if(a != 100 -5 * 6/2){cout << a;}else{cin >> a;}
+
+    
+    while(randomBoolFunction()){repeat(!b&& a < 6){a.b.c.d.e.f.g = 6;return a;}return 1;}
+
+
+        if(a != 100 -5 * 6/2){cout << a; t1 = 1 - 5;return a+3;if(a == !true){cin >> a;if(b == ! true){tag = "further nested";}}while(a == false){tag = "nested while loop";}
+
+        
+        if(generateBool() != generateRandomBool(1,6)){out = "nested if else";}else{return gradeA();}}
+
+    return 0; 
+}
+    
+

@@ -1,0 +1,131 @@
+struct st0{
+    int a;
+    int b;
+};
+
+struct st{
+    int a;
+    bool b;   
+    struct st0 c;
+};
+
+int a;
+
+
+
+void h()
+{
+    return; //void function with return 
+}
+
+void h2()
+{
+    //void function without return;
+}
+bool g()
+{
+    bool b;
+    return b;
+
+}
+int j(int a, bool b)
+{
+
+    return a;
+}
+
+
+int f()
+{
+    int b;
+    int c;
+    bool d;
+    bool e;
+    struct st z;
+    //some arithmetic valid cases + assignment 
+    b = f() + a;    //f() return int, so it should work
+    b = f() / a; 
+    b = f() - a;
+    b = f() * a;
+    b = c*f() + a;
+    b = c/f() + a;
+    b = c-f() + a;
+    b = c+f() + a;
+    b = c*(f() + a);
+    b = c*(f() - a);
+    b = c*(f() * a);
+    b = c*(f() / a);
+    b = c = b + 3;
+
+    d = e;
+    d = b > f() || c > b || b <= f() || c < b || c >= b || !g() == false;
+    d = 3 == b;
+
+    //equality && relational operators
+    if(b > f() || c > b || b <= f() || c < b || c >= b || !g() == false)
+    {
+
+    }
+
+    while(b > f() || c > b || b <= f() || c < b || c >= b || !g() != true)
+    {
+
+    }
+
+    if(b > f() && c > b && b <= f() && c < b && c >= b && !g() == false)
+    {
+
+    }else{
+
+    }
+
+    while(b > f() && c > b && b <= f() && c < b && c >= b && !g() != true)
+    {
+        
+    }
+
+
+    //test Repeat
+
+    repeat(3){
+
+    }
+
+    repeat(b){
+
+    }
+
+    repeat(z.c.a){
+
+    }
+
+    repeat(j(a, g())){
+
+    }
+
+    //test cout cin
+
+    cout << "string lit";
+    cout << 3;
+    cout << b;
+    cout << true;
+    cout << d;
+    cout << g();
+
+    cin >> b;
+    cin >> z.c.a;
+    cin >> z.b;
+    cin >> d;
+
+
+    //test function return 
+    c = j(1, true);
+    c = j(b,d);
+    c = j(f(),g());
+    d = g();
+
+    return b;
+}
+
+
+

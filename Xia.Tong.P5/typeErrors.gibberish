@@ -1,0 +1,369 @@
+struct st0{
+    int a;
+    int b;
+};
+
+struct st{
+    int a;
+    bool b;   
+    struct st0 c;
+};
+
+int a;
+
+
+
+void h()
+{
+    return ; //void function with return 
+}
+
+void h2()
+{
+    //void function without return;
+}
+bool g()
+{
+    bool b;
+    return b;
+
+}
+int j(int a, bool b)
+{
+
+    return a;
+}
+
+
+int f()
+{
+    int b;
+    int c;
+    bool d;
+    bool e;
+    struct st z;
+    struct st0 z1;
+    //Arithmetic operator applied to non-numeric operand
+    b = f() + d;    
+    b = f() / d; 
+    b = f() - d;
+    b = f() * d;
+    b = z*f() + a;
+    b = z/f() + a;
+    b = z-f() + a;
+    b = z+f() + a;
+    b = c*(f() + f);
+    b = c*(f() - (a-f));
+    b = c*(f() * true);
+    b = st*(f() / a);
+    d++;
+    st++;
+    z++;
+    f--;
+    d--;
+    st--;
+    z--;
+    f--;
+
+    //*Relational operator applied to non-numeric operand
+    d = b < e;
+    d = b < true;
+    d = z < e;
+    d = st < z;
+    d = d < e;
+    d = f < g();
+
+    d = b <= e;
+    d = b <= true;
+    d = z <= e;
+    d = st <= z;
+    d = d <= e;
+    d = f <= g();
+
+    d = b > e;
+    d = b > true;
+    d = z > e;
+    d = st > z;
+    d = d > e;
+    d = f > g();
+
+    d = b >= e;
+    d = b >= true;
+    d = z >= e;
+    d = st >= z;
+    d = d >= e;
+    d = f >= g();
+
+    //*Logical operator applied to non-bool operand
+    d = b && e;
+    d = b && true;
+    d = z && e;
+    d = st && z;
+    d = (f+3) && g() && 3;
+
+    d = b || e;
+    d = b || true;
+    d = z || e;
+    d = st || z;
+    d = f || g();
+
+    d = !b;
+    d = !z;
+    d = !st;
+    d = !f;
+    d = !g();
+
+
+    //Non-bool expression used as an if condition
+    if(b && e)
+    {
+
+    }
+    if(b && true)
+    {
+
+    }
+    if(z && e)
+    {
+
+    }
+    if(st && z)
+    {
+
+    }
+    if((f+3) && g() && 3)
+    {
+
+    }
+
+    if(4)
+    {
+
+    }
+
+
+    //*Non-bool expression used as a while condition
+    while(b && e)
+    {
+
+    }
+    while(b && true)
+    {
+
+    }
+    while(z && e)
+    {
+
+    }
+    while(st && z)
+    {
+
+    }
+    while((f+3) && g() && 3)
+    {
+
+    }
+
+    while(4)
+    {
+
+    }
+
+
+    //*Non-integer expression used as a repeat clause
+
+    repeat(f){
+
+    }
+
+    repeat(true){
+
+    }
+
+    repeat(st){
+
+    }
+
+    repeat(z.b){
+
+    }
+
+    repeat(z){
+
+    }
+
+    repeat(g()){
+
+    }
+
+    //*assign Type mismatch
+    b = st0;
+    b = z;
+    b = true;
+    b = g();
+    b = f;
+
+    d = st0;
+    d = z;
+    d = 3;
+    d = f;
+
+    d = b == st;
+    d = b == z;
+    d = b == true;
+    d = b == g();
+    d = b == f;
+
+    d = d == st0;
+    d = d == z;
+    d = d == 3;
+    d = d == f;
+
+    d = b != st0;
+    d = b != z;
+    d = b != true;
+    d = b != g();
+    d = b != f;
+
+    d = d != st0;
+    d = d != z;
+    d = d != 3;
+    d = d != f;
+
+    //*Equality operator applied to void functions
+
+    d = h() == h2();
+
+    //*Equality operator applied to functions
+    d = f == g;
+
+    //*Equality operator applied to struct names
+    d = st == st0;
+
+    //*Equality operator applied to struct variables
+    d = z == z1;
+
+    //*Function assignment
+    f = g;
+
+    //*Struct name assignment
+    st = st0;
+    //*Struct variable assignment
+    z = z1;
+
+
+
+
+    //***test cout cin
+
+    //*attempt write a function
+    cout << f;  
+    cout << h;
+    cout << g;
+
+    //*attempt to write a struct name
+    cout << st0;
+    cout << st;
+
+    //*attempt to write a struct variable
+    cout << z;
+
+    //*attempt to write void
+    cout << h();
+    cout << h2(); 
+
+    //*attempt read a function
+    cin >> f;  
+    cin >> h;
+    cin >> g;
+
+    //*attempt to read a struct name
+    cin >> st0;
+    cin >> st;
+
+    //*attempt to read a struct variable
+    cin >> z;
+
+
+
+    //***test function call 
+
+    //*test call non function
+    a();
+    a(1);
+    b();
+    b(2);
+    z();
+    st0();
+    
+    //*test wrong number of args
+    j(1 );
+    j(1,2,3);
+    j(true, true, true);
+    j(false, false, false);
+    j(h(), h(), h());
+    j(h());
+
+    //*test actual types not match
+    j(d,b);
+    j(b,b);
+
+    return b;
+}
+
+//***test return value of functions
+
+//*miss return val
+int missingReturnValue1()
+{
+
+}
+bool missingReturnValue2()
+{
+    
+}
+
+//return val in void function
+void returnValueInVoid1()
+{
+    return 2;
+}
+void returnValueInVoid2()
+{
+    return true;
+}
+
+void returnValueInVoid3()
+{
+    return f;
+}
+void returnValueInVoid4()
+{
+    return st0;
+}
+
+//*return the wrong type
+
+int returnWrongType1()
+{
+    return false;
+}
+bool returnWrongType2()
+{
+    return 3;
+}
+int returnWrongType3()
+{
+    return st0;
+}
+bool returnWrongType4()
+{
+    return f;
+}
+
+bool returnWrongType5()
+{
+    struct st0 goodstruct;
+    return goodstruct;
+}
+

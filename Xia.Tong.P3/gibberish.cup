@@ -1,0 +1,522 @@
+/**********************************************************************
+ Java CUP specification for a parser for C-- programs.
+ **********************************************************************/
+
+import java_cup.runtime.*;
+import java.util.*;
+
+/*
+ * The code below redefines method syntax_error to give better error messages
+ * than just "Syntax error".
+ */
+parser code {:
+
+public void syntax_error(Symbol currToken) {
+    if (currToken.value == null) {
+        ErrMsg.fatal(0,0, "Syntax error at end of file");
+    }
+    else {
+        ErrMsg.fatal(((TokenVal)currToken.value).linenum,
+                     ((TokenVal)currToken.value).charnum,
+                     "Syntax error");
+    }
+    System.exit(-1);
+}
+:};
+
+
+/* Terminals (tokens returned by the scanner). */
+terminal                INT;
+terminal                BOOL;
+terminal                VOID;
+terminal  TokenVal      TRUE;
+terminal  TokenVal      FALSE;
+terminal                STRUCT;
+terminal                CIN;
+terminal                COUT;
+terminal                IF;
+terminal                ELSE;
+terminal                WHILE;
+terminal		REPEAT;
+terminal                RETURN;
+terminal IdTokenVal     ID;
+terminal IntLitTokenVal INTLITERAL;
+terminal StrLitTokenVal STRINGLITERAL;
+terminal                LCURLY;
+terminal                RCURLY;
+terminal                LPAREN;
+terminal                RPAREN;
+terminal                SEMICOLON;
+terminal                COMMA;
+terminal                DOT;
+terminal                WRITE;
+terminal                READ;
+terminal                PLUSPLUS;
+terminal                MINUSMINUS;
+terminal                PLUS;
+terminal                MINUS;
+terminal                TIMES;
+terminal                DIVIDE;
+terminal                NOT;
+terminal                AND;
+terminal                OR;
+terminal                EQUALS;
+terminal                NOTEQUALS;
+terminal                LESS;
+terminal                GREATER;
+terminal                LESSEQ;
+terminal                GREATEREQ;
+terminal                ASSIGN;
+
+
+/* Non-terminals
+ *
+ * NOTE: You will need to add more non-terminals to this list as you
+ *       add productions to the grammar below.
+ */
+non terminal ProgramNode      program;
+non terminal LinkedList       declList;
+non terminal DeclNode         decl;
+non terminal LinkedList       varDeclList;
+non terminal VarDeclNode      varDecl;
+non terminal FnDeclNode       fnDecl;
+non terminal StructDeclNode   structDecl;  
+non terminal LinkedList       structBody;  
+non terminal FormalsListNode  formals; 
+non terminal LinkedList       formalsList;  
+non terminal FormalDeclNode   formalDecl;  
+non terminal FnBodyNode       fnBody;  
+non terminal LinkedList       stmtList;  
+non terminal StmtNode         stmt;
+non terminal AssignNode       assignExp;    
+non terminal ExpNode          exp;
+non terminal ExpNode          term;
+non terminal CallExpNode      fncall;
+non terminal LinkedList       actualList;
+non terminal TypeNode         type;
+non terminal ExpNode          loc;
+non terminal IdNode           id;
+
+
+/* Precedences
+ *
+ * NOTE: Add precedence and associativity declarations here.
+ *
+ */
+ precedence right ASSIGN;
+ precedence right OR;
+ precedence right AND;
+ precedence nonassoc EQUALS, NOTEQUALS, LESS, GREATER, LESSEQ, GREATEREQ;
+ precedence left PLUS, MINUS;
+ precedence left TIMES, DIVIDE;
+ precedence left NOT;
+ precedence left DOT;
+
+
+
+start with program;
+
+
+/* The grammar with actions
+ *
+ * NOTE: add more grammar rules below.
+ *
+ */
+program         ::= declList: d
+                {: 
+                //System.out.println("in the prgram node");
+                
+                RESULT = new ProgramNode(new DeclListNode(d));
+                :}
+                ;
+
+declList        ::= declList:dl decl:d
+                {: 
+                //System.out.println("in the decl node");
+                dl.addLast(d);
+                   RESULT = dl;
+                :}
+                | /* epsilon */
+                {: 
+                //System.out.println("in the decl epsilon node");
+                RESULT = new LinkedList<DeclNode>();
+                :}
+                ;
+
+decl            ::= varDecl:v
+                {: 
+                //System.out.println("in the decl1 node");
+                RESULT = v;
+                :}
+                | fnDecl:f
+                {: 
+                //System.out.println("in the decl2 node");
+                RESULT = f;
+                :}
+                | structDecl:s
+                {:  
+                //System.out.println("in the decl 3 node");
+                RESULT = s;
+                :}
+                ;
+
+
+varDeclList     ::= varDeclList:vl varDecl:vd
+                {:
+                //System.out.println("in the varDeclList1 node");
+                vl.addLast(vd);
+                  RESULT = vl;
+                :}
+                | /* epsilon */
+                {:
+                //System.out.println("in the varDeclList2 node");
+                    RESULT = new LinkedList<VarDeclNode>();
+                :};
+
+
+varDecl         ::= type:t id:i SEMICOLON
+                {: 
+                //System.out.println("in the varDecl1 node");
+                RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
+                :}
+                |STRUCT id:id1 id:id2 SEMICOLON
+                {:
+                //System.out.println("in the varDecl2 node");
+                 RESULT = new VarDeclNode(new StructNode(id1), id2, 1);  
+                :}
+                ;
+fnDecl          ::= type:t id:i formals:f fnBody:b
+                {: 
+                //System.out.println("in the fnDecl node");
+                RESULT = new FnDeclNode(t, i, f, b);
+                :}
+                ;
+
+structDecl      ::= STRUCT id:i LCURLY structBody:l RCURLY SEMICOLON
+                {:
+                //System.out.println("in the structDecl node");
+                RESULT = new StructDeclNode(i, new DeclListNode(l));
+                :}
+                ;
+
+structBody      ::= structBody:l varDecl:d
+                {: 
+                //System.out.println("in the structBody1 node");
+                l.addLast(d);
+                RESULT = l;
+                :}
+                | varDecl:d
+                {:
+                //System.out.println("in the structBody2 node");
+                LinkedList<VarDeclNode> tmp = new LinkedList<VarDeclNode>();
+                  tmp.addLast(d);
+                  RESULT = tmp;
+                :}
+                ;
+
+formals         ::= LPAREN RPAREN
+                {:
+                //System.out.println("in the formals 1 node ");
+                RESULT = new FormalsListNode(new LinkedList<>());
+                :}
+                | LPAREN formalsList:l RPAREN
+                {:
+                //System.out.println("in the formals2 node");
+                RESULT = new FormalsListNode(l);
+                :}
+                ;
+
+formalsList     ::= formalDecl:f
+                {:
+                //System.out.println("in the formalsList1 node");
+                    LinkedList<FormalDeclNode> list = new LinkedList<>();
+                    list.addFirst(f);
+                    RESULT = list;
+                :}
+                | formalDecl:f COMMA formalsList:l
+                {:  
+                //System.out.println("in the formalsList2 node");
+                l.addFirst(f);
+                RESULT = l;  
+                :}
+                ;
+
+formalDecl      ::= type:t id:i        // note: no struct parameters
+                {:
+                //System.out.println("in the formalDecl node");
+                RESULT = new FormalDeclNode(t, i);
+                :}
+                ;
+
+
+fnBody          ::= LCURLY varDeclList:d stmtList:s RCURLY
+                {:
+                //System.out.println("in the fnBody node");
+                RESULT = new FnBodyNode(new DeclListNode(d),new StmtListNode(s));
+                :}
+                ;
+
+
+stmtList        ::= stmtList:l stmt:s
+                {:
+                //System.out.println("in the stmtList1 node");
+                l.addLast(s);
+                RESULT = l;
+                :}
+                | /* epsilon */
+                {:
+                //System.out.println("in the stmtList2 node");
+                RESULT = new LinkedList<StmtNode>();
+                :}
+                ;
+
+stmt            ::= assignExp:a SEMICOLON
+                {:
+                //System.out.println("in the stmt1 node");
+                RESULT = new AssignStmtNode(a);
+                :}
+                | loc:e PLUSPLUS SEMICOLON
+                {:
+                //System.out.println("in the stmt2 node");
+                RESULT = new PostIncStmtNode(e);
+                :}
+                | loc:e MINUSMINUS SEMICOLON
+                {: 
+                //System.out.println("in the stmt3 node");
+                RESULT = new PostDecStmtNode(e); 
+                :}
+                | CIN READ loc:e SEMICOLON
+                {:
+                //System.out.println("in the stmt4 node");
+                RESULT = new ReadStmtNode(e);
+                :}
+                | COUT WRITE exp:e SEMICOLON
+                {:
+                //System.out.println("in the stmt5 node");
+                RESULT = new WriteStmtNode(e);
+                :}
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:d stmtList:s RCURLY
+                {:
+                //System.out.println("in the stmt6 node");
+                RESULT = new IfStmtNode(e, new DeclListNode(d),new StmtListNode(s));
+                :}
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:d stmtList:s RCURLY ELSE LCURLY varDeclList:d2 stmtList:s2 RCURLY
+                {:
+                //System.out.println("in the stmt7 node");
+                RESULT = new IfElseStmtNode(e,new DeclListNode(d),new StmtListNode(s),new DeclListNode(d2),new StmtListNode(s2));
+                :}
+                | WHILE LPAREN exp:e RPAREN LCURLY varDeclList:d stmtList:s RCURLY
+                {:
+                //System.out.println("in the stmt8 node");
+                RESULT = new WhileStmtNode(e,new DeclListNode(d),new StmtListNode(s));
+                :}
+		| REPEAT LPAREN exp:e RPAREN LCURLY varDeclList:d stmtList:s RCURLY
+        {:
+        //System.out.println("in the stmt9 node");
+        RESULT = new RepeatStmtNode(e,new DeclListNode(d),new StmtListNode(s));
+        :}
+                | RETURN exp:e SEMICOLON
+                {:
+                //System.out.println("in the stmt10 node");
+                 RESULT = new ReturnStmtNode(e); 
+                :}
+                | RETURN SEMICOLON
+                {:
+                //System.out.println("in the stmt11 node");
+                RESULT = new ReturnStmtNode(null);
+                :}
+                | fncall:f SEMICOLON
+                {:
+                //System.out.println("in the stmt12 node");
+                RESULT = new CallStmtNode(f);
+                :}
+                ;
+
+assignExp       ::= loc:l ASSIGN exp:e
+                {:
+                //System.out.println("in the assignExp node");
+                RESULT = new AssignNode(l, e);
+                :}
+                ;
+exp             ::= assignExp:a
+                {: 
+                //System.out.println("in the exp1 node");
+                RESULT = a;
+                :}
+                | exp:e1 PLUS exp:e2
+                {: 
+                //System.out.println("in the exp2 node");
+                RESULT = new PlusNode(e1, e2);
+                :}
+                | exp:e1 MINUS exp:e2
+                {: 
+                //System.out.println("in the exp3 node");
+                RESULT = new MinusNode(e1, e2);
+                :}
+                | exp:e1 TIMES exp:e2
+                {: 
+                //System.out.println("in the exp4 node");
+                RESULT = new TimesNode(e1, e2);
+                :}
+                | exp:e1 DIVIDE exp:e2
+                {:
+                //System.out.println("in the exp5 node");
+                 RESULT = new DivideNode(e1, e2);
+                :}
+                | NOT exp:e1
+                {: 
+                //System.out.println("in the exp6 node");
+                RESULT = new NotNode(e1);
+                :}
+                | exp:e1 AND exp:e2
+                {: 
+                //System.out.println("in the exp7 node");
+                RESULT = new AndNode(e1, e2); 
+                :}
+                | exp:e1 OR exp:e2
+                {: 
+                //System.out.println("in the exp8 node");
+                RESULT = new OrNode(e1, e2); 
+                :}
+                | exp:e1 EQUALS exp:e2
+                {: 
+                //System.out.println("in the exp9 node");
+                RESULT = new EqualsNode(e1, e2);
+                :}
+                | exp:e1 NOTEQUALS exp:e2
+                {:
+                //System.out.println("in the exp10 node");
+                RESULT = new NotEqualsNode(e1, e2);
+                :}
+                | exp:e1 LESS exp:e2
+                {:
+                //System.out.println("in the exp11 node");
+                RESULT = new LessNode(e1, e2);
+                :}
+                | exp:e1 GREATER exp:e2
+                {:
+                //System.out.println("in the exp12 node");
+                 RESULT = new GreaterNode(e1, e2);
+                :}
+                | exp:e1 LESSEQ exp:e2
+                {:
+                //System.out.println("in the exp13 node");
+                 RESULT = new LessEqNode(e1, e2);
+                :}
+                | exp:e1 GREATEREQ exp:e2
+                {:
+                //System.out.println("in the exp14 node");
+                RESULT = new GreaterEqNode(e1, e2);
+                :}
+                | MINUS term:e
+                {:
+                //System.out.println("in the exp15 node");
+                RESULT = new UnaryMinusNode(e);
+                :}
+                | term:t
+                {:
+                //System.out.println("in the exp16 node");
+                RESULT = t; 
+                :}
+                ;
+                
+term            ::= loc:l
+                {:
+                //System.out.println("in the term1 node");
+                RESULT = l; 
+                :}
+                | INTLITERAL:i
+                {:
+                //System.out.println("in the term2 node");
+                RESULT = new IntLitNode(i.linenum, i.charnum, i.intVal);
+                :}
+                | STRINGLITERAL:s
+                {:
+                //System.out.println("in the term3 node");
+                RESULT = new StringLitNode(s.linenum, s.charnum, s.strVal);
+                :}
+                | TRUE:t
+                {:
+                //System.out.println("in the term4 node");
+                RESULT = new TrueNode(t.linenum, t.charnum);
+                :}
+                | FALSE:f
+                {:
+                //System.out.println("in the term5 node");
+                RESULT = new FalseNode(f.linenum, f.charnum);
+                :}
+                | LPAREN exp:e RPAREN
+                {:
+                //System.out.println("in the term6 node");
+                RESULT = e;
+                :}
+                | fncall:f
+                {:
+                //System.out.println("in the term7 node");
+                RESULT = f;
+                :}
+                ;
+
+
+fncall          ::=  id:i LPAREN RPAREN   // fn call with no args
+                {:
+                //System.out.println("in the fncall1 node");
+                RESULT = new CallExpNode(i, null);
+                :}
+                | id:i LPAREN actualList:a RPAREN  // with args
+                {:
+                //System.out.println("in the fncall2 node");
+                RESULT = new CallExpNode(i, new ExpListNode(a));
+                :}
+                ;
+
+actualList      ::= exp:e
+                {:
+                //System.out.println("in the actualList1 node");
+                LinkedList<ExpNode> temp = new LinkedList<ExpNode>();
+                temp.addLast(e);
+                RESULT = temp;
+                :}
+                | actualList:a COMMA exp:e
+                {:
+                //System.out.println("in the actualList2 node");
+                a.addLast(e);
+                    RESULT = a;
+                :}
+                ;
+
+type            ::= INT
+                {:
+                //System.out.println("in the type1 node");
+                 RESULT = new IntNode();
+                :}
+                | BOOL
+                {: 
+                //System.out.println("in the type2 node");
+                RESULT = new BoolNode();
+                :}
+                | VOID
+                {: 
+                //System.out.println("in the type3 node");
+                RESULT = new VoidNode();
+                :}
+                ;
+
+loc             ::= id:i
+                {: 
+                //System.out.println("in the loc1 node");
+                RESULT = i;
+                :}
+                | loc:l DOT id:i
+                {:
+                //System.out.println("in the loc2 node");
+                RESULT = new DotAccessExpNode(l,i);
+                :};
+
+
+id              ::= ID:i
+                {: 
+                //System.out.println("in the id node");
+                RESULT = new IdNode(i.linenum, i.charnum, i.idVal);
+                :}
+                ;

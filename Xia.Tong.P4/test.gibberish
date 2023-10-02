@@ -1,0 +1,150 @@
+struct Point1 {
+    int Point1;
+    int y;
+    bool a;
+};
+struct Point2 {
+    struct Point1 x;
+    int y;
+    bool z;
+};
+struct Point3 {
+    struct Point2 x;
+    int y;
+    bool z;
+};
+
+int v;
+bool l;
+struct Point2 k;
+
+void b(int b)
+{
+
+}
+
+int c()
+{
+    int c;
+    return b(c);
+}
+
+bool d(int a, bool b)
+{
+    c();
+}
+
+void e()
+{
+    d(3);
+}
+
+
+void a() {
+    struct Point3 p;
+    int x;
+    bool m;
+    p.x.x.Point1 =3;
+    p.x.x.y =3;
+    p.x.x.a = true;
+    x  = p.x.x.y;
+    
+    d(p.x.x.y, p.x.x.a);
+    d(3, true);
+        v= 15;
+        l=true;
+        k.y = v;
+
+    if(x==0)
+    {
+        int x;
+        x = 1;
+        p.x.x.Point1 =3;
+        v= 15;
+        l=true;
+        k.y = v;
+        m = true;
+    }
+
+    if(x==0)
+    {
+        int x;
+        x=1;
+        p.x.x.Point1 =3;
+        m = true;
+        v=8;
+        l=true;
+        k.y = v;
+    }else{
+        int x;
+        x=1;
+        p.x.x.Point1 =3;
+        m = true;
+        v=9;
+        v= 15;
+        l=true;
+        k.y = v;
+
+
+    while(v == 0)
+    {
+        if(l == 0)
+        {
+            int x;
+            x = 1;
+            p.x.x.Point1 =3;
+            v= 15;
+            l=true;
+            k.y = v;
+        }
+
+    }
+    }
+
+    while(x==0)
+    {
+        int x;
+        x=1;
+        p.x.x.Point1 =3;
+        m = true;
+        v= 15;
+        l=true;
+        k.y = v;
+    }
+
+    if(x == 0)
+    {
+        if(x == 0)
+        {
+            int x;
+            x = 1;
+            p.x.x.Point1 =3;
+            v= 15;
+            l=true;
+            k.y = v;
+        }
+
+    }
+
+    while(v == 0)
+    {
+        if(l == 0)
+        {
+            int x;
+            x = 1;
+            p.x.x.Point1 =3;
+            v= 15;
+            l=true;
+            k.y = v;
+        }
+
+    }
+
+
+
+
+}
+
+
+
+
